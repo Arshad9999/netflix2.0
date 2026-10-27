@@ -23,7 +23,7 @@ function LoginScreen() {
                     <div className="loginScreen__searchform">
                     <form>
                         <input type="search" name="searchbar" />
-                        <button className="loginScreen__getStarted">Get Started</button>
+                        <button type="button" onClick={() => setSignIn(true)} className="loginScreen__getStarted">Get Started</button>
                     </form>
                 </div>
                 </>

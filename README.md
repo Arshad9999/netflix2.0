@@ -1,48 +1,44 @@
-# <a href="https://arshad9999.github.io/netflix2.0/public/index.html/">2nd Website Link! </a>
+# Movie Browsing Learning Clone
 
-# Getting Started with Create React App and Redux yes
+A forked React/Redux learning project with a movie catalog and Firebase sign-in screens. It does not provide film streaming or subscriptions.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) Template.
+## Setup
 
-## Available Scripts
+Use Node.js 24 and npm.
 
-In the project directory, you can run:
+```sh
+npm ci
+npm run dev
+```
 
-### `npm start`
+Open http://localhost:3000. `npm start` is an alias for the development server.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Checks and production build
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```sh
+npm test
+npm run build
+npm run audit
+```
 
-### `npm test`
+Vite writes the production site to `dist/`. `npm run preview` serves that build locally. Configure the host to serve index.html for browser routes. This maintenance change does not deploy the application.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Provenance
 
-### `npm run build`
+Read [FORK_NOTES.md](FORK_NOTES.md) for upstream attribution and contribution limits. Existing upstream license notices are retained. No new license has been assigned.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Service configuration
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Copy `.env.example` to `.env.local` and supply your own Firebase web configuration and a permitted TMDB client API key. The example intentionally contains no real values. Without configuration the app remains logged out, shows a setup status, and refuses service calls rather than contacting the historical project.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Every `VITE_` value is visible in the browser build. Never use Firebase admin/service-account credentials or a private provider token here. Use provider restrictions and appropriate Firebase rules; use a backend proxy if the provider credential must remain secret.
 
-### `npm run eject`
+The historical hard-coded movie key and Firebase configuration have been removed from the current source. They remain in Git history; no credential rotation is claimed. Do not reuse values from repository history.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Validation limits
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Tests mock catalog and auth services, cover authentication/routing, missing configuration, empty catalog results and request failures. A real account sign-in and real movie API call require the owner's service configuration and have not been exercised. Playback and saved lists are not implemented. The Firebase hosting output is configured as `dist/`, but no deployment is initiated by this change.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Dependency note
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The aggregate Firebase SDK includes an older server-side gRPC dependency through Firestore, even though this UI imports only Authentication. An override keeps `@grpc/grpc-js` on a patched compatible 1.x version. The authentication bundle does not use Firestore; its real-service behavior still needs owner configuration and verification.

@@ -1,17 +1,20 @@
-import firebase from 'firebase'
+import { getApps, initializeApp } from 'firebase/app';
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyB62TD5u_6qW7qyhow05xaeBZgQ4BGgxqc",
-    authDomain: "netflix-clone-3e4bd.firebaseapp.com",
-    projectId: "netflix-clone-3e4bd",
-    storageBucket: "netflix-clone-3e4bd.appspot.com",
-    messagingSenderId: "744770687522",
-    appId: "1:744770687522:web:da4a923267f3d331d3b07b"
-}
+const config = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
+export const firebaseConfigured = Object.values(config).every(Boolean);
+const auth = firebaseConfigured ? getAuth(getApps()[0] ?? initializeApp(config)) : null;
+const unavailable = () => Promise.reject(new Error('Sign-in is unavailable until Firebase is configured.'));
 
-const firebaseApp = firebase.initializeApp(firebaseConfig)
-const db = firebaseApp.firestore()
-const auth = firebase.auth()
-
-export { auth }
-export default db
+export const subscribeToUser = callback => {
+  if (!auth) { callback(null); return () => {}; }
+  return onAuthStateChanged(auth, callback);
+};
+export const registerAccount = (email, password) => auth ? createUserWithEmailAndPassword(auth, email, password) : unavailable();
+export const signIn = (email, password) => auth ? signInWithEmailAndPassword(auth, email, password) : unavailable();
+export const signOutUser = () => auth ? signOut(auth) : unavailable();

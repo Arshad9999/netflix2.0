@@ -14,4 +14,4 @@ Use the upstream README for setup. Keep upstream license and copyright notices i
 
 ## Actual purpose and validation limits
 
-A Create React App/Redux movie-browsing frontend. It references Firebase and a movie API, but the manifest omits packages imported by the source. Runtime and service configuration need repair.
+A Create React App/Redux movie-browsing frontend. It uses Firebase Authentication and a movie API. The manifest now declares the actual imports and the app requires the owner’s service configuration; historical hard-coded values are not reused.
