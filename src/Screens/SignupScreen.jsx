@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import './SignupScreen.css'
-import { auth } from '../firebase'
+import { registerAccount, signIn } from '../firebase'
 
 function SignupScreen() {
     const emailRef = useRef(null)
@@ -8,25 +8,21 @@ function SignupScreen() {
 
     const register = (evt) => {
         evt.preventDefault()
-        auth.createUserWithEmailAndPassword(
+        registerAccount(
             emailRef.current.value,
             passwordRef.current.value
-        ).then((authUser) => {
-            console.log(authUser)
-        }).catch((error) => {
+        ).catch((error) => {
             alert(error.message)
         })
     }
 
     const login = (evt) => {
         evt.preventDefault()
-        auth.signInWithEmailAndPassword(
+        signIn(
             emailRef.current.value,
             passwordRef.current.value
         )
-            .then((authUser)=>{
-            console.log(authUser)
-        })
+
             .catch((error)=>{
             alert(error.message)
         })
